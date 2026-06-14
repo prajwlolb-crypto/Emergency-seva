@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ne" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="theme-color" content="#f97316" />
+  <meta name="description" content="Emergency Sewa — Instant access to emergency contacts across all 7 provinces and 77 districts of Nepal." />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Emergency Sewa" />
+  <title>Emergency Sewa 🇳🇵 — Nepal Emergency Contacts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚨</text></svg>" />
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+    }
+  </script>
+</head>
+<body>
+
+<div class="app-wrapper">
+
+  <!-- ====== HEADER ====== -->
+  <header class="app-header">
+    <div class="header-inner">
+
+      <!-- Logo -->
+      <div class="header-logo" onclick="navigate('home')" role="button" tabindex="0">
+        <svg class="logo-heart" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/>
+        </svg>
+        <span>Emergency Seva</span>
+      </div>
+
+      <!-- Desktop Nav -->
+      <nav class="desktop-nav" aria-label="Main navigation">
+        <button class="nav-btn" data-page="home" onclick="navigate('home')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Home
+        </button>
+        <button class="nav-btn" data-page="favorites" onclick="navigate('favorites')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Favorites
+        </button>
+        <button class="nav-btn" data-page="custom" onclick="navigate('custom')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          My Contacts
+        </button>
+        <button class="nav-btn" data-page="more" onclick="navigate('more')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          More
+        </button>
+      </nav>
+
+      <!-- Header Actions -->
+      <div class="header-actions">
+        <button class="btn btn-accent btn-sm hidden-mobile" onclick="openAddContactModal()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add Contact
+        </button>
+        <button class="btn-icon" id="theme-toggle" onclick="toggleTheme()" title="Toggle dark/light mode">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="theme-icon-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="theme-icon-sun" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </button>
+        <button class="btn btn-login btn-sm" onclick="navigate('profile')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Login
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ====== MAIN CONTENT ====== -->
+  <main class="main-area" id="main-content" role="main" aria-live="polite">
+    <div class="loading-screen">
+      <div class="loading-spinner"></div>
+      <p>Loading Emergency Sewa…</p>
+    </div>
+  </main>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="app-footer">
+    <p>
+      ⚠️ <strong>Disclaimer:</strong> This is <em>not</em> an official government app.<br />
+      In a life-threatening emergency always call
+      <a href="tel:100"><strong>100</strong></a> (Police) ·
+      <a href="tel:102"><strong>102</strong></a> (Ambulance) ·
+      <a href="tel:101"><strong>101</strong></a> (Fire)<br />
+      <span style="font-size:0.75rem;">© <span id="footer-year"></span> Emergency Sewa Developed by <strong>Prajwol</strong>.Not an official government app.</span>
+  
+    </p>
+  </footer>
+
+  <!-- ====== BOTTOM NAV (mobile) ====== -->
+  <nav class="bottom-nav" aria-label="Mobile navigation">
+    <button class="bottom-nav-item active" data-page="home" onclick="navigate('home')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Home</span>
+    </button>
+    <button class="bottom-nav-item" data-page="favorites" onclick="navigate('favorites')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <span>Favorites</span>
+    </button>
+    <button class="bottom-nav-item" data-page="custom" onclick="navigate('custom')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>My Contacts</span>
+    </button>
+    <button class="bottom-nav-item" data-page="more" onclick="navigate('more')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <span>More</span>
+    </button>
+  </nav>
+
+</div>
+
+<!-- ====== TOAST ====== -->
+<div id="toast-container" class="toast-container" role="alert" aria-live="assertive"></div>
+
+<!-- ====== REPORT MODAL ====== -->
+<div id="report-modal" class="modal-overlay" style="display:none;" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>🚩 Report an Issue</h3>
+      <button class="modal-close" onclick="closeReportModal()">✕</button>
+    </div>
+    <p class="modal-subtitle" id="report-contact-name" style="background:var(--muted);padding:8px 12px;border-radius:8px;font-size:0.85rem;font-weight:600;"></p>
+    <form id="report-form" onsubmit="handleReportSubmit(event)">
+      <input type="hidden" id="report-contact-id" name="contactId">
+      <div class="form-field mb-3">
+        <label class="form-label">What is the issue? *</label>
+        <div class="radio-group mt-2">
+          <label class="radio-item"><input type="radio" name="issueType" value="wrong_number" required> 📵 Wrong / disconnected number</label>
+          <label class="radio-item"><input type="radio" name="issueType" value="wrong_address"> 📍 Wrong address or location</label>
+          <label class="radio-item"><input type="radio" name="issueType" value="closed"> 🔒 Service no longer exists</label>
+          <label class="radio-item"><input type="radio" name="issueType" value="new_number"> 🔄 New / updated number available</label>
+          <label class="radio-item"><input type="radio" name="issueType" value="other"> 📋 Other</label>
+        </div>
+      </div>
+      <div class="form-field mb-3">
+        <label class="form-label">Correct information (if known)</label>
+        <input type="text" name="correctInfo" class="input-text" placeholder="e.g., the correct number is 01-XXXXXXX" />
+      </div>
+      <div class="form-field mb-3">
+        <label class="form-label">Additional notes</label>
+        <textarea name="notes" class="input-textarea" rows="3" placeholder="Any additional context..."></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="closeReportModal()">Cancel</button>
+        <button type="submit" class="btn btn-destructive">🚩 Submit Report</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ====== ADD CONTACT MODAL ====== -->
+<div id="add-contact-modal" class="modal-overlay" style="display:none;" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>➕ Add Custom Contact</h3>
+      <button class="modal-close" onclick="closeAddContactModal()">✕</button>
+    </div>
+    <p class="modal-subtitle">Save a personal emergency contact to your device.</p>
+    <form onsubmit="handleAddContactSubmit(event)" class="form-stack">
+      <div class="form-field"><label class="form-label">Name *</label><input type="text" name="name" class="input-text" placeholder="e.g., Dr. Kumar bohora" required /></div>
+      <div class="form-field"><label class="form-label">Phone Number *</label><input type="tel" name="phone" class="input-text" placeholder="e.g., 9800000000" required /></div>
+      <div class="form-field">
+        <label class="form-label">Category</label>
+        <select name="category" class="input-select">
+          <option value="other">📋 Other</option>
+          <option value="hospital">🏥 Hospital</option>
+          <option value="clinic">🩺 Clinic / Doctor</option>
+          <option value="pharmacy">💊 Pharmacy</option>
+          <option value="police">👮 Police</option>
+          <option value="fire">🚒 Fire Brigade</option>
+          <option value="ambulance">🚑 Ambulance</option>
+          <option value="blood">🩸 Blood Bank</option>
+          <option value="helpline">📞 Helpline</option>
+        </select>
+      </div>
+      <div class="form-field"><label class="form-label">Address (Optional)</label><input type="text" name="address" class="input-text" placeholder="e.g., Lagankhel, Lalitpur" /></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="closeAddContactModal()">Cancel</button>
+        <button type="submit" class="btn btn-accent">💾 Save Contact</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<input type="hidden" id="profile-photo-data" value="" />
+<script src="app.js"></script>
+</body>
+</html>
