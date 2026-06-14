@@ -5,21 +5,16 @@
   "display": "standalone",
   "name": "Emergency Seva",
   "orientation": "any",
-  "scope": "//Emergency-seva/",
+  "scope": "/Emergency-seva/",
   "short_name": "Emergency-Sewa",
-  "start_url": "//Emergency-seva/",
+  "start_url": "/Emergency-seva/",
   "theme_color": "#f97316",
   "icons": [
     {
-      "src": "data:image/svg+xml,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'&gt;&lt;text y='.9em' font-size='90'&gt;🚨&lt;/text&gt;&lt;/svg&gt;",
-      "isSquare": false,
-      "isPng": false,
-      "isWebp": false,
-      "isJpg": false,
-      "width": 0,
-      "is512x512": false,
-      "is256x256": false,
-      "is192x192": false
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
     }
   ],
   "categories": [
