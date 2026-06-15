@@ -1,18 +1,19 @@
-
 {
+  "id": "https://prajwlolb-crypto.github.io/Emergency-seva/",
   "name": "Emergency Sewa Nepal",
   "short_name": "Emergency Sewa",
   "description": "Instant access to emergency contacts across all 7 provinces and 77 districts of Nepal. Police, Ambulance, Fire, Blood Banks and more.",
-  "start_url": "/",
-  "scope": "/",
+  "start_url": "/Emergency-seva/",
+  "scope": "/Emergency-seva/",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#ffffff",
+  "background_color": "#1e293b",
   "theme_color": "#f97316",
   "lang": "ne",
   "dir": "ltr",
   "categories": ["health", "utilities", "lifestyle"],
-
+  "related_applications": [],
+  "prefer_related_applications": false,
   "icons": [
     { "src": "icons/android/launchericon-48x48.png",   "sizes": "48x48",     "type": "image/png", "purpose": "any" },
     { "src": "icons/android/launchericon-72x72.png",   "sizes": "72x72",     "type": "image/png", "purpose": "any" },
@@ -49,7 +50,6 @@
     { "src": "icons/ios/512.png",  "sizes": "512x512",   "type": "image/png", "purpose": "any" },
     { "src": "icons/ios/1024.png", "sizes": "1024x1024", "type": "image/png", "purpose": "any" }
   ],
-
   "screenshots": [
     {
       "src": "icons/android/launchericon-512x512.png",
@@ -59,7 +59,6 @@
       "label": "Emergency Sewa Home Screen"
     }
   ],
-
   "shortcuts": [
     {
       "name": "Call Police",
@@ -82,7 +81,5 @@
       "url": "tel:101",
       "icons": [{ "src": "icons/android/launchericon-96x96.png", "sizes": "96x96", "type": "image/png" }]
     }
-  ],
-
-  "prefer_related_applications": false
+  ]
 }
