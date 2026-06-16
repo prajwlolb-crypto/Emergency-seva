@@ -5,20 +5,56 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <meta name="theme-color" content="#f97316" />
   <meta name="description" content="Emergency Sewa — Instant access to emergency contacts across all 7 provinces and 77 districts of Nepal." />
+
+  <!-- PWA / Mobile App Meta -->
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Emergency Sewa" />
+
+  <!-- Windows Tile -->
+  <meta name="msapplication-TileColor" content="#f97316" />
+  <meta name="msapplication-TileImage" content="/Emergency-seva/icons/android/launchericon-144x144.png" />
+  <meta name="msapplication-config" content="none" />
+
   <title>Emergency Sewa 🇳🇵 — Nepal Emergency Contacts</title>
+
+  <!-- Preconnect (must be before font link) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="manifest" href="/Emergency-seva/manifest.json">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="/Emergency-seva/manifest.json" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32"   href="/Emergency-seva/icons/ios/32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/Emergency-seva/icons/android/launchericon-192x192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="/Emergency-seva/icons/android/launchericon-512x512.png" />
+
+  <!-- Apple Touch Icons -->
+  <link rel="apple-touch-icon" sizes="57x57"   href="/Emergency-seva/icons/ios/57.png" />
+  <link rel="apple-touch-icon" sizes="72x72"   href="/Emergency-seva/icons/ios/72.png" />
+  <link rel="apple-touch-icon" sizes="76x76"   href="/Emergency-seva/icons/ios/76.png" />
+  <link rel="apple-touch-icon" sizes="114x114" href="/Emergency-seva/icons/ios/114.png" />
+  <link rel="apple-touch-icon" sizes="120x120" href="/Emergency-seva/icons/ios/120.png" />
+  <link rel="apple-touch-icon" sizes="144x144" href="/Emergency-seva/icons/ios/144.png" />
+  <link rel="apple-touch-icon" sizes="152x152" href="/Emergency-seva/icons/ios/152.png" />
+  <link rel="apple-touch-icon" sizes="167x167" href="/Emergency-seva/icons/ios/167.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/Emergency-seva/icons/ios/180.png" />
+  <link rel="apple-touch-icon" sizes="1024x1024" href="/Emergency-seva/icons/ios/1024.png" />
+
+  <!-- Stylesheet -->
   <link rel="stylesheet" href="/Emergency-seva/style.css" />
-  <link rel="icon" href="/Emergency-seva/logo.png">
-  <link rel="apple-touch-icon" href="/Emergency-seva/logo.png">  <script>
+
+  <!-- Service Worker Registration -->
+  <script>
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => navigator.serviceWorker.register('/Emergency-seva/sw.js').catch(() => {}));
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/Emergency-seva/sw.js')
+          .then(reg => console.log('✅ SW registered:', reg.scope))
+          .catch(err => console.warn('❌ SW failed:', err));
+      });
     }
   </script>
 </head>
@@ -93,8 +129,7 @@
       <a href="tel:100"><strong>100</strong></a> (Police) ·
       <a href="tel:102"><strong>102</strong></a> (Ambulance) ·
       <a href="tel:101"><strong>101</strong></a> (Fire)<br />
-      <span style="font-size:0.75rem;">© <span id="footer-year"></span> Emergency Sewa Developed by <strong>Prajwol</strong>.Not an official government app.</span>
-  
+      <span style="font-size:0.75rem;">© <span id="footer-year"></span> Emergency Sewa — Developed by <strong>Prajwol</strong>. Not an official government app.</span>
     </p>
   </footer>
 
@@ -168,7 +203,7 @@
     </div>
     <p class="modal-subtitle">Save a personal emergency contact to your device.</p>
     <form onsubmit="handleAddContactSubmit(event)" class="form-stack">
-      <div class="form-field"><label class="form-label">Name *</label><input type="text" name="name" class="input-text" placeholder="e.g., Dr. Kumar bohora" required /></div>
+      <div class="form-field"><label class="form-label">Name *</label><input type="text" name="name" class="input-text" placeholder="e.g., Dr. Kumar Bohora" required /></div>
       <div class="form-field"><label class="form-label">Phone Number *</label><input type="tel" name="phone" class="input-text" placeholder="e.g., 9800000000" required /></div>
       <div class="form-field">
         <label class="form-label">Category</label>
@@ -194,6 +229,8 @@
 </div>
 
 <input type="hidden" id="profile-photo-data" value="" />
-<script src="app.js"></script>
+
+<!-- ✅ FIXED: full GitHub Pages path -->
+<script src="/Emergency-seva/app.js"></script>
 </body>
 </html>
