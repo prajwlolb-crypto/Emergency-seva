@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Offline — Emergency Sewa</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #1e293b;
+      color: #f1f5f9;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+    }
+    .icon { font-size: 4rem; margin-bottom: 16px; }
+    h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; }
+    p { font-size: 0.9rem; color: #94a3b8; margin-bottom: 24px; line-height: 1.6; }
+    .emergency-numbers {
+      background: #ef444420;
+      border: 1px solid #ef4444;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+      width: 100%;
+      max-width: 320px;
+    }
+    .emergency-numbers h2 { font-size: 0.9rem; color: #fca5a5; margin-bottom: 12px; }
+    .number-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #ef444430;
+    }
+    .number-item:last-child { border-bottom: none; }
+    .number-label { font-size: 0.85rem; color: #cbd5e1; }
+    .number-call {
+      background: #ef4444;
+      color: white;
+      padding: 6px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+    .retry-btn {
+      background: #f97316;
+      color: white;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .retry-btn:hover { background: #ea6c0a; }
+  </style>
+</head>
+<body>
+  <div class="icon">📶</div>
+  <h1>You're Offline</h1>
+  <p>No internet connection detected.<br/>
+  But you can still call these national emergency numbers:</p>
+
+  <div class="emergency-numbers">
+    <h2>⚠️ National Emergency Numbers</h2>
+    <div class="number-item">
+      <span class="number-label">👮 Police</span>
+      <a href="tel:100" class="number-call">Call 100</a>
+    </div>
+    <div class="number-item">
+      <span class="number-label">🚑 Ambulance</span>
+      <a href="tel:102" class="number-call">Call 102</a>
+    </div>
+    <div class="number-item">
+      <span class="number-label">🚒 Fire Brigade</span>
+      <a href="tel:101" class="number-call">Call 101</a>
+    </div>
+    <div class="number-item">
+      <span class="number-label">⚡ Disaster Help</span>
+      <a href="tel:1149" class="number-call">Call 1149</a>
+    </div>
+  </div>
+
+  <button class="retry-btn" onclick="window.location.reload()">
+    🔄 Retry Connection
+  </button>
+</body>
+</html>
