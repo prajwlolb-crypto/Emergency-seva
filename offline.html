@@ -3,93 +3,782 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Offline — Emergency Sewa</title>
+  <title>Offline — Emergency Seva</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange: #f97316;
+      --orange-dark: #ea6c0a;
+      --orange-glow: #f9731618;
+      --red: #ef4444;
+      --red-dim: #ef444415;
+      --red-border: #ef444435;
+      --bg: #0f172a;
+      --bg-card: #1e293b;
+      --bg-card2: #162032;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --border: #2d3f55;
+      --border-light: #1e293b;
+      --green: #22c55e;
+    }
+
+    html { scroll-behavior: smooth; }
+
     body {
       font-family: 'Inter', system-ui, sans-serif;
-      background: #1e293b;
-      color: #f1f5f9;
+      background: var(--bg);
+      color: var(--text);
       min-height: 100vh;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    /* Ambient glow */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -10%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 350px;
+      background: radial-gradient(ellipse, #f9731612 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── NAV ── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #0f172aee;
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .nav-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+    .nav-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--orange);
+      letter-spacing: -0.3px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 6px;
+    }
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 8px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .nav-link:hover { background: #ffffff0a; color: var(--text); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 56px 24px 40px;
       display: flex;
       flex-direction: column;
       align-items: center;
+      gap: 16px;
+      animation: fadeUp 0.5s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .signal-wrap {
+      position: relative;
+      width: 88px;
+      height: 88px;
+      display: flex;
+      align-items: center;
       justify-content: center;
-      padding: 24px;
-      text-align: center;
     }
-    .icon { font-size: 4rem; margin-bottom: 16px; }
-    h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; }
-    p { font-size: 0.9rem; color: #94a3b8; margin-bottom: 24px; line-height: 1.6; }
-    .emergency-numbers {
-      background: #ef444420;
-      border: 1px solid #ef4444;
+    .signal-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 2px solid var(--orange);
+      opacity: 0;
+      animation: pulse-ring 2.2s ease-out infinite;
+    }
+    .signal-ring:nth-child(2) { animation-delay: 0.55s; }
+    .signal-ring:nth-child(3) { animation-delay: 1.1s; }
+    @keyframes pulse-ring {
+      0%   { transform: scale(0.55); opacity: 0.7; }
+      100% { transform: scale(1.5); opacity: 0; }
+    }
+    .signal-icon { position: relative; z-index: 1; font-size: 2.4rem; }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--red-dim);
+      border: 1px solid var(--red-border);
+      border-radius: 999px;
+      padding: 5px 14px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #fca5a5;
+    }
+    .status-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--red);
+      animation: blink 1.5s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.15; }
+    }
+
+    .hero h1 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--text);
+    }
+    .hero p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 360px;
+    }
+
+    .retry-btn {
+      background: var(--orange);
+      color: white;
+      border: none;
+      padding: 13px 32px;
       border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 24px;
-      width: 100%;
-      max-width: 320px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 20px #f9731630;
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
     }
-    .emergency-numbers h2 { font-size: 0.9rem; color: #fca5a5; margin-bottom: 12px; }
+    .retry-btn:hover  { background: var(--orange-dark); box-shadow: 0 4px 28px #f9731650; }
+    .retry-btn:active { transform: scale(0.97); }
+    .retry-btn:disabled { opacity: 0.65; cursor: not-allowed; }
+    .spinner {
+      display: none; width: 16px; height: 16px;
+      border: 2px solid #ffffff40; border-top-color: white;
+      border-radius: 50%; animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── SECTIONS ── */
+    .page { max-width: 860px; margin: 0 auto; padding: 0 20px 60px; }
+    .section { margin-bottom: 40px; animation: fadeUp 0.5s ease both; }
+
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+      letter-spacing: -0.3px;
+    }
+
+    /* ── EMERGENCY NUMBERS ── */
+    .emergency-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .emergency-card-header {
+      background: linear-gradient(135deg, #ef444420, #ef444408);
+      border-bottom: 1px solid var(--red-border);
+      padding: 13px 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .emergency-card-header h3 {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #fca5a5;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
     .number-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 0;
-      border-bottom: 1px solid #ef444430;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border-light);
+      transition: background 0.15s;
     }
     .number-item:last-child { border-bottom: none; }
-    .number-label { font-size: 0.85rem; color: #cbd5e1; }
-    .number-call {
-      background: #ef4444;
+    .number-item:hover { background: #ffffff05; }
+    .number-left { display: flex; align-items: center; gap: 12px; }
+    .number-emoji { font-size: 1.25rem; width: 30px; text-align: center; }
+    .number-label { font-size: 0.875rem; font-weight: 600; color: var(--text); display: block; }
+    .number-sub { font-size: 0.72rem; color: var(--text-dim); display: block; margin-top: 2px; }
+    .call-btn {
+      background: var(--red);
       color: white;
-      padding: 6px 16px;
+      padding: 7px 18px;
       border-radius: 8px;
       text-decoration: none;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: 700;
+      transition: background 0.15s, transform 0.1s;
+      white-space: nowrap;
     }
-    .retry-btn {
-      background: #f97316;
-      color: white;
-      border: none;
-      padding: 12px 28px;
-      border-radius: 10px;
-      font-size: 0.95rem;
-      font-weight: 700;
+    .call-btn:hover  { background: #dc2626; }
+    .call-btn:active { transform: scale(0.95); }
+
+    /* ── EMERGENCY GUIDE ── */
+    .guide-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 14px;
+    }
+    .guide-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
       cursor: pointer;
+      transition: border-color 0.2s, transform 0.15s;
     }
-    .retry-btn:hover { background: #ea6c0a; }
+    .guide-card:hover { border-color: var(--orange); transform: translateY(-2px); }
+    .guide-card.open { border-color: var(--orange); }
+    .guide-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      gap: 10px;
+    }
+    .guide-card-left { display: flex; align-items: center; gap: 10px; }
+    .guide-emoji {
+      font-size: 1.4rem;
+      width: 40px; height: 40px;
+      background: var(--orange-glow);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .guide-title { font-size: 0.875rem; font-weight: 600; color: var(--text); }
+    .guide-chevron {
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      transition: transform 0.25s;
+      flex-shrink: 0;
+    }
+    .guide-card.open .guide-chevron { transform: rotate(180deg); color: var(--orange); }
+    .guide-steps {
+      display: none;
+      padding: 0 16px 16px;
+      border-top: 1px solid var(--border-light);
+      margin-top: 0;
+    }
+    .guide-card.open .guide-steps { display: block; }
+    .guide-steps ol {
+      padding-left: 18px;
+      margin-top: 12px;
+    }
+    .guide-steps li {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 6px;
+      padding-left: 4px;
+    }
+    .guide-steps li:last-child { margin-bottom: 0; }
+    .step-tag {
+      display: inline-block;
+      background: var(--orange-glow);
+      color: var(--orange);
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin-right: 4px;
+      vertical-align: middle;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .about-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+    }
+    .about-card-icon { font-size: 1.5rem; margin-bottom: 10px; }
+    .about-card-title { font-size: 0.875rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .about-card-desc  { font-size: 0.8rem; color: var(--text-muted); line-height: 1.65; }
+
+    .disclaimer-box {
+      background: var(--red-dim);
+      border: 1px solid var(--red-border);
+      border-radius: 14px;
+      padding: 18px 20px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .disclaimer-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 1px; }
+    .disclaimer-text { font-size: 0.82rem; color: #fca5a5; line-height: 1.7; }
+    .disclaimer-text strong { color: #fecaca; }
+
+    .about-footer {
+      margin-top: 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .about-logo { width: 52px; height: 52px; border-radius: 12px; object-fit: cover; }
+    .about-footer-text h4 { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .about-footer-text p  { font-size: 0.78rem; color: var(--text-muted); line-height: 1.6; }
+
+    /* ── DIVIDER ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 8px 0 36px;
+    }
+
+    /* ── FOOTER ── */
+    .page-footer {
+      text-align: center;
+      padding: 20px 24px 32px;
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      line-height: 1.8;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── ONLINE TOAST ── */
+    .online-toast {
+      position: fixed;
+      bottom: 24px; left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #166534;
+      border: 1px solid #22c55e40;
+      color: #bbf7d0;
+      padding: 10px 22px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex; align-items: center; gap: 8px;
+      transition: transform 0.3s ease;
+      z-index: 999;
+      white-space: nowrap;
+      box-shadow: 0 4px 20px #00000040;
+    }
+    .online-toast.show { transform: translateX(-50%) translateY(0); }
+
+    @media (max-width: 520px) {
+      .nav-links { display: none; }
+      .guide-grid, .about-grid { grid-template-columns: 1fr; }
+      .about-footer { flex-direction: column; text-align: center; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .signal-ring, .status-dot { animation: none; }
+      * { animation-duration: 0.01ms !important; }
+    }
   </style>
 </head>
 <body>
-  <div class="icon">📶</div>
-  <h1>You're Offline</h1>
-  <p>No internet connection detected.<br/>
-  But you can still call these national emergency numbers:</p>
 
-  <div class="emergency-numbers">
-    <h2>⚠️ National Emergency Numbers</h2>
-    <div class="number-item">
-      <span class="number-label">👮 Police</span>
-      <a href="tel:100" class="number-call">Call 100</a>
+  <!-- NAV -->
+  <nav class="nav">
+    <a class="nav-brand" href="/Emergency-seva/">
+      <img class="nav-logo" src="data:image/jpeg;base64,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" alt="Emergency Seva Logo"/>
+      <span class="nav-name">Emergency Seva</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="#numbers">Numbers</a>
+      <a class="nav-link" href="#guide">Guide</a>
+      <a class="nav-link" href="#about">About</a>
     </div>
-    <div class="number-item">
-      <span class="number-label">🚑 Ambulance</span>
-      <a href="tel:102" class="number-call">Call 102</a>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="signal-wrap">
+      <div class="signal-ring"></div>
+      <div class="signal-ring"></div>
+      <div class="signal-ring"></div>
+      <div class="signal-icon">📶</div>
     </div>
-    <div class="number-item">
-      <span class="number-label">🚒 Fire Brigade</span>
-      <a href="tel:101" class="number-call">Call 101</a>
+    <div class="status-pill">
+      <div class="status-dot"></div>
+      No Internet Connection
     </div>
-    <div class="number-item">
-      <span class="number-label">⚡ Disaster Help</span>
-      <a href="tel:1149" class="number-call">Call 1149</a>
-    </div>
+    <h1>You're Offline</h1>
+    <p>Don't worry — the emergency numbers below work without internet. You can still call any service directly from this page.</p>
+    <button class="retry-btn" id="retry-btn" onclick="retryConnection()">
+      <span id="retry-icon">🔄</span>
+      <span id="retry-text">Retry Connection</span>
+      <div class="spinner" id="spinner"></div>
+    </button>
   </div>
 
-  <button class="retry-btn" onclick="window.location.reload()">
-    🔄 Retry Connection
-  </button>
+  <!-- PAGE CONTENT -->
+  <div class="page">
+
+    <!-- EMERGENCY NUMBERS -->
+    <div class="section" id="numbers">
+      <p class="section-label">Always Available</p>
+      <h2 class="section-title">🚨 National Emergency Numbers</h2>
+      <div class="emergency-card">
+        <div class="emergency-card-header">
+          <span>⚠️</span>
+          <h3>Call directly — no internet needed</h3>
+        </div>
+        <div class="number-item">
+          <div class="number-left">
+            <div class="number-emoji">👮</div>
+            <div>
+              <span class="number-label">Police</span>
+              <span class="number-sub">प्रहरी — Nationwide 24/7</span>
+            </div>
+          </div>
+          <a href="tel:100" class="call-btn">Call 100</a>
+        </div>
+        <div class="number-item">
+          <div class="number-left">
+            <div class="number-emoji">🚑</div>
+            <div>
+              <span class="number-label">Ambulance</span>
+              <span class="number-sub">एम्बुलेन्स — Nationwide 24/7</span>
+            </div>
+          </div>
+          <a href="tel:102" class="call-btn">Call 102</a>
+        </div>
+        <div class="number-item">
+          <div class="number-left">
+            <div class="number-emoji">🚒</div>
+            <div>
+              <span class="number-label">Fire Brigade</span>
+              <span class="number-sub">दमकल — Nationwide 24/7</span>
+            </div>
+          </div>
+          <a href="tel:101" class="call-btn">Call 101</a>
+        </div>
+        <div class="number-item">
+          <div class="number-left">
+            <div class="number-emoji">⚡</div>
+            <div>
+              <span class="number-label">Disaster Control</span>
+              <span class="number-sub">विपद् नियन्त्रण — Nationwide</span>
+            </div>
+          </div>
+          <a href="tel:1149" class="call-btn">Call 1149</a>
+        </div>
+        <div class="number-item">
+          <div class="number-left">
+            <div class="number-emoji">🆘</div>
+            <div>
+              <span class="number-label">National Emergency Center</span>
+              <span class="number-sub">राष्ट्रिय आपतकालीन केन्द्र</span>
+            </div>
+          </div>
+          <a href="tel:1155" class="call-btn">Call 1155</a>
+        </div>
+        <div class="number-item">
+          <div class="number-left">
+            <div class="number-emoji">👩</div>
+            <div>
+              <span class="number-label">Women Helpline</span>
+              <span class="number-sub">महिला हेल्पलाइन — Nationwide</span>
+            </div>
+          </div>
+          <a href="tel:1145" class="call-btn">Call 1145</a>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- EMERGENCY GUIDE -->
+    <div class="section" id="guide">
+      <p class="section-label">Be Prepared</p>
+      <h2 class="section-title">📖 Emergency Preparedness Guide</h2>
+      <div class="guide-grid">
+
+        <div class="guide-card" onclick="toggleGuide(this)">
+          <div class="guide-card-header">
+            <div class="guide-card-left">
+              <div class="guide-emoji">🌍</div>
+              <span class="guide-title">During an Earthquake</span>
+            </div>
+            <span class="guide-chevron">▼</span>
+          </div>
+          <div class="guide-steps">
+            <ol>
+              <li><span class="step-tag">1st</span>DROP to the ground immediately — do not run.</li>
+              <li><span class="step-tag">2nd</span>Take COVER under a sturdy table or cover your head with your arms.</li>
+              <li><span class="step-tag">3rd</span>HOLD ON until the shaking completely stops.</li>
+              <li>Stay away from windows, glass, and anything that could fall.</li>
+              <li>Do NOT use elevators. Use stairs when exiting after shaking stops.</li>
+              <li>After exiting, move to an open area away from buildings.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="guide-card" onclick="toggleGuide(this)">
+          <div class="guide-card-header">
+            <div class="guide-card-left">
+              <div class="guide-emoji">🌊</div>
+              <span class="guide-title">During a Flood</span>
+            </div>
+            <span class="guide-chevron">▼</span>
+          </div>
+          <div class="guide-steps">
+            <ol>
+              <li><span class="step-tag">Key</span>Move immediately to higher ground — don't wait.</li>
+              <li>Do NOT walk, swim, or drive through flood waters.</li>
+              <li>6 inches of moving water can knock you down.</li>
+              <li>1 foot of water can sweep a vehicle away.</li>
+              <li>Stay off bridges over fast-moving water.</li>
+              <li>Listen to authorities and do not return until cleared.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="guide-card" onclick="toggleGuide(this)">
+          <div class="guide-card-header">
+            <div class="guide-card-left">
+              <div class="guide-emoji">🐍</div>
+              <span class="guide-title">Snake Bite</span>
+            </div>
+            <span class="guide-chevron">▼</span>
+          </div>
+          <div class="guide-steps">
+            <ol>
+              <li><span class="step-tag">Do</span>Stay calm and move away from the snake.</li>
+              <li>Remove tight clothing and jewelry before swelling starts.</li>
+              <li>Keep the bite area below heart level.</li>
+              <li>Clean the wound gently with soap and water.</li>
+              <li><span class="step-tag">Don't</span>Do NOT cut the wound or suck out the venom.</li>
+              <li>Do NOT apply a tourniquet or ice.</li>
+              <li>Seek medical help immediately — call 102.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="guide-card" onclick="toggleGuide(this)">
+          <div class="guide-card-header">
+            <div class="guide-card-left">
+              <div class="guide-emoji">🚗</div>
+              <span class="guide-title">Road Accident</span>
+            </div>
+            <span class="guide-chevron">▼</span>
+          </div>
+          <div class="guide-steps">
+            <ol>
+              <li><span class="step-tag">1st</span>Check the scene for safety before approaching.</li>
+              <li>Call 102 (Ambulance) or 100 (Police) immediately.</li>
+              <li>Do NOT move someone with a possible neck or back injury.</li>
+              <li>Stop bleeding by applying firm pressure with a clean cloth.</li>
+              <li>Keep the person warm and reassured.</li>
+              <li>Do not give anything to eat or drink.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="guide-card" onclick="toggleGuide(this)">
+          <div class="guide-card-header">
+            <div class="guide-card-left">
+              <div class="guide-emoji">🔥</div>
+              <span class="guide-title">In Case of Fire</span>
+            </div>
+            <span class="guide-chevron">▼</span>
+          </div>
+          <div class="guide-steps">
+            <ol>
+              <li><span class="step-tag">Small</span>Use extinguisher: Pull, Aim, Squeeze, Sweep (PASS).</li>
+              <li><span class="step-tag">Large</span>Evacuate immediately. Do not try to fight it.</li>
+              <li>Feel doors before opening — if hot, use another exit.</li>
+              <li>Stay low to avoid smoke inhalation while escaping.</li>
+              <li>Once out, stay out — never re-enter a burning building.</li>
+              <li>Call Fire Brigade: 101 from a safe location.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="guide-card" onclick="toggleGuide(this)">
+          <div class="guide-card-header">
+            <div class="guide-card-left">
+              <div class="guide-emoji">🩺</div>
+              <span class="guide-title">Heart Attack Signs</span>
+            </div>
+            <span class="guide-chevron">▼</span>
+          </div>
+          <div class="guide-steps">
+            <ol>
+              <li><span class="step-tag">Signs</span>Chest pain, shortness of breath, sweating, arm/jaw pain.</li>
+              <li>Call 102 immediately — do not wait.</li>
+              <li>Have the person sit or lie down in a comfortable position.</li>
+              <li>Loosen tight clothing around neck and chest.</li>
+              <li>If trained, be ready to perform CPR if they become unresponsive.</li>
+              <li>Stay calm and keep the person calm until help arrives.</li>
+            </ol>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- ABOUT -->
+    <div class="section" id="about">
+      <p class="section-label">Who We Are</p>
+      <h2 class="section-title">🛡️ About Emergency Seva</h2>
+
+      <div class="about-grid">
+        <div class="about-card">
+          <div class="about-card-icon">🇳🇵</div>
+          <div class="about-card-title">Built for Nepal</div>
+          <div class="about-card-desc">Emergency Seva provides instant access to emergency contacts across all 7 provinces and 77 districts of Nepal — in both Nepali and English.</div>
+        </div>
+        <div class="about-card">
+          <div class="about-card-icon">📶</div>
+          <div class="about-card-title">Works Offline</div>
+          <div class="about-card-desc">All contact data is embedded in the app. Once loaded, it works without an internet connection — critical when networks are down during emergencies.</div>
+        </div>
+        <div class="about-card">
+          <div class="about-card-icon">📞</div>
+          <div class="about-card-title">One-Tap Calling</div>
+          <div class="about-card-desc">Every contact has a direct call button. No copying numbers, no searching. In an emergency, every second counts.</div>
+        </div>
+        <div class="about-card">
+          <div class="about-card-icon">📍</div>
+          <div class="about-card-title">Location Aware</div>
+          <div class="about-card-desc">Set your province and district once and instantly see the relevant local emergency contacts for your area.</div>
+        </div>
+        <div class="about-card">
+          <div class="about-card-icon">⭐</div>
+          <div class="about-card-title">Favorites & Custom</div>
+          <div class="about-card-desc">Save your most-used contacts to Favorites. Add your personal emergency contacts like family doctors, neighbors, or local helpers.</div>
+        </div>
+        <div class="about-card">
+          <div class="about-card-icon">📱</div>
+          <div class="about-card-title">Emergency SMS</div>
+          <div class="about-card-desc">Send your GPS location to an emergency contact with one tap — helpful when you cannot speak or describe your location.</div>
+        </div>
+      </div>
+
+      <div class="disclaimer-box">
+        <div class="disclaimer-icon">⚠️</div>
+        <div class="disclaimer-text">
+          <strong>Important Disclaimer:</strong> Emergency Seva is NOT an official government application. It is a community tool built to help people find emergency contacts faster. In any life-threatening situation, always call <strong>100</strong> (Police), <strong>102</strong> (Ambulance), or <strong>101</strong> (Fire) first. Contact numbers may change — please verify critical numbers in advance.
+        </div>
+      </div>
+
+      <div class="about-footer">
+        <img class="about-logo" src="data:image/jpeg;base64,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" alt="Logo"/>
+        <div class="about-footer-text">
+          <h4>Emergency Seva — Nepal</h4>
+          <p>Developed with ❤️ for Nepal by <strong>Prajwol</strong><br/>
+          Not an official government app · Free to use · Open for community</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PAGE FOOTER -->
+  <footer class="page-footer">
+    © 2025 Emergency Seva · Developed by Prajwol · Not an official government app<br/>
+    In any emergency always call <strong>100</strong> · <strong>101</strong> · <strong>102</strong>
+  </footer>
+
+  <!-- ONLINE TOAST -->
+  <div class="online-toast" id="online-toast">✅ Back online! Redirecting…</div>
+
+  <script>
+    window.addEventListener('online', () => {
+      document.getElementById('online-toast').classList.add('show');
+      setTimeout(() => window.location.href = '/Emergency-seva/', 1500);
+    });
+
+    function retryConnection() {
+      const btn = document.getElementById('retry-btn');
+      const icon = document.getElementById('retry-icon');
+      const text = document.getElementById('retry-text');
+      const sp = document.getElementById('spinner');
+      btn.disabled = true;
+      icon.style.display = 'none';
+      sp.style.display = 'block';
+      text.textContent = 'Checking connection…';
+      setTimeout(() => {
+        if (navigator.onLine) {
+          window.location.href = '/Emergency-seva/';
+        } else {
+          btn.disabled = false;
+          icon.style.display = 'block';
+          sp.style.display = 'none';
+          text.textContent = 'Still offline — Try again';
+          setTimeout(() => { text.textContent = 'Retry Connection'; }, 3000);
+        }
+      }, 1500);
+    }
+
+    function toggleGuide(card) {
+      card.classList.toggle('open');
+    }
+  </script>
+
 </body>
 </html>
